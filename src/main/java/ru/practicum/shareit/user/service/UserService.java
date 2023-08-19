@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exeption.ElementNotFoundException;
 import ru.practicum.shareit.exeption.UniqueEmailException;
 import ru.practicum.shareit.exeption.ValidationException;
+import ru.practicum.shareit.user.repository.UserStorage;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.Map;
 
