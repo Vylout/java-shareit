@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.repository.ItemStorage;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserStorage;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.*;
 
@@ -19,12 +19,12 @@ import java.util.*;
 public class ItemService {
 
     private final ItemStorage itemStorage;
-    private final UserStorage userStorage;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ItemService(ItemStorage itemStorage, UserStorage userStorage) {
+    public ItemService(ItemStorage itemStorage, UserRepository userRepository) {
         this.itemStorage = itemStorage;
-        this.userStorage = userStorage;
+        this.userRepository = userRepository;
     }
 
     public Map<Long, Item> getAllItems() {
@@ -40,9 +40,8 @@ public class ItemService {
     }
 
     public Item addItem(Long userId, ItemDto itemDto) {
-        checkUser(userId);
         checkItemDto(itemDto);
-        User user = userStorage.getUserById(userId);
+        User user = getUser(userId);
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(user);
         return itemStorage.addItem(item);
@@ -50,7 +49,7 @@ public class ItemService {
 
     public Item updateItem(Item item, Long ownerId) {
         checkTheItemOwner(item.getId(), ownerId);
-        User owner = userStorage.getUserById(ownerId);
+        User owner = getUser(ownerId);
         item.setOwner(owner);
 
         Item updateItem = getItemById(item.getId());
@@ -86,11 +85,9 @@ public class ItemService {
         return itemsList;
     }
 
-    private void checkUser(Long userId) {
-        if (!userStorage.getAllUsers().containsKey(userId)) {
-            log.error("Пользователь не найден.");
-            throw new ElementNotFoundException("Пользователь");
-        }
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new ElementNotFoundException(String.format("Пользователь с ID " + userId)));
     }
 
     private void checkItemDto(ItemDto itemDto) {
