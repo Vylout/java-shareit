@@ -30,7 +30,7 @@ public class BookingController {
     @PostMapping
     ResponseBookingDto addBooking(@Valid @RequestBody BookingDto bookingDto,
                                   @RequestHeader(USER_ID_HEADER) Long userId) {
-        log.info("Запрос на бронирования вещи {} от пользователя {}", bookingDto.getItemId() , userId);
+        log.info("Запрос на бронирования вещи {} от пользователя {}", bookingDto.getItemId(), userId);
         Booking booking = bookingService.addBooking(bookingDto, userId);
         return BookingMapper.toResponseBooking(booking);
     }

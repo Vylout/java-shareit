@@ -14,7 +14,7 @@ import static ru.practicum.shareit.utils.Constants.DATE_PATTERN;
 @Data
 @Builder
 public class BookingDto {
-    private Long ItemId;
+    private Long itemId;
     @NotNull(message = "не указано начало бронирования")
     @FutureOrPresent
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN)
