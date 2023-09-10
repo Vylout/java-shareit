@@ -83,7 +83,7 @@ public class ItemService {
         LocalDateTime now = LocalDateTime.now();
         Booking lastBooking = null;
         Booking nextBooking = null;
-        if (item.getOwner().getId() == userId) {
+        if (Objects.equals(item.getOwner().getId(), userId)) {
             lastBooking = bookingRepository.findBookingByItemIdAndStartBefore(item.getId(), now, SORT_BY_START_DESC).stream().findFirst().orElse(null);
             nextBooking = bookingRepository.findBookingByItemIdAndStartAfterAndStatus(item.getId(), now, BookingStatus.APPROVED, SORT_BY_START).stream().findFirst().orElse(null);
         }

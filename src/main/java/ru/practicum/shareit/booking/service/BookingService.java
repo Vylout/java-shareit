@@ -19,6 +19,7 @@ import ru.practicum.shareit.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.practicum.shareit.utils.Constants.SORT_BY_START_DESC;
 
@@ -37,7 +38,7 @@ public class BookingService {
 
     public Booking addBooking(BookingDto bookingDto, Long userId) {
         Item item = getItem(bookingDto.getItemId());
-        if (item.getOwner().getId() == userId) {
+        if (Objects.equals(item.getOwner().getId(), userId)) {
             throw new ElementNotFoundException("Пользователь");
         }
         if (!item.getAvailable()) {
@@ -53,7 +54,7 @@ public class BookingService {
 
     public Booking approved(Long bookingId, boolean approved, Long userId) {
         Booking booking = getBooking(bookingId);
-        if (booking.getItem().getOwner().getId() != userId) {
+        if (!Objects.equals(booking.getItem().getOwner().getId(), userId)) {
             throw new ElementNotFoundException("Пользователь");
         }
         if (booking.getStatus() != BookingStatus.WAITING) {
@@ -65,7 +66,7 @@ public class BookingService {
 
     public Booking getBookingByUser(Long bookingId, Long userId) {
         Booking booking = getBooking(bookingId);
-        if (booking.getBooker().getId() != userId && booking.getItem().getOwner().getId() != userId) {
+        if (!Objects.equals(booking.getBooker().getId(), userId) && !Objects.equals(booking.getItem().getOwner().getId(), userId)) {
             throw new ElementNotFoundException("Пользователь");
         }
         return booking;
