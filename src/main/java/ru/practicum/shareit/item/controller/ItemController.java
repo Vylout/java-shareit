@@ -3,11 +3,11 @@ package ru.practicum.shareit.item.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.dto.ItemDto;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 import static ru.practicum.shareit.utils.Constants.USER_ID_HEADER;
@@ -24,35 +24,46 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto addItem(@RequestBody ItemDto itemDto, @RequestHeader(USER_ID_HEADER) Long userId) {
+    public ItemDto addItem(@Valid @RequestBody ItemDto itemDto,
+                           @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на добавление вещи");
         Item item = itemService.addItem(userId, itemDto);
         return ItemMapper.toItemDto(item);
     }
 
     @PatchMapping("{id}")
-    public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable("id") Long itemId, @RequestHeader(USER_ID_HEADER) Long ownerId) {
+    public ItemDto updateItem(@RequestBody ItemDto itemDto,
+                              @PathVariable("id") Long itemId,
+                              @RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Запрос на обновление данных вещи с id = {}", itemId);
         Item item = itemService.updateItem(ItemMapper.toItem(itemId, itemDto), ownerId);
         return ItemMapper.toItemDto(item);
     }
 
     @GetMapping
-    public Collection<ItemDto> getAllItemsByUser(@RequestHeader(USER_ID_HEADER) Long userId) {
+    public Collection<ResponseItemDto> getAllItemsByUser(@RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на получение списка вещей пользователя с id {}", userId);
-        Collection<Item> items = itemService.getAllItemsByUser(userId);
-        return ItemMapper.toCollection(items);
+        return itemService.getAllItemsByUser(userId);
     }
 
     @GetMapping("/{id}")
-    public ItemDto getItemById(@PathVariable("id") Long itemId) {
+    public ResponseItemDto getItemById(@PathVariable("id") Long itemId,
+                                       @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на получение вещи с id {}", itemId);
-        return ItemMapper.toItemDto(itemService.getItemById(itemId));
+        return itemService.getItemByUser(itemId, userId);
     }
 
     @GetMapping("/search")
     public Collection<ItemDto> findItemByText(@RequestParam String text) {
         log.info("Запрос поиска вещи по тексту: {}", text);
         return ItemMapper.toCollection(itemService.findItemByText(text));
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public ResponseCommentDto addComment(@Valid @RequestBody CommentDto commentDto,
+                                         @PathVariable Long itemId,
+                                         @RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Запрос на добавление сомментария от ползователя {} к вещи {}", userId, itemId);
+        return itemService.addComment(commentDto, itemId, userId);
     }
 }
