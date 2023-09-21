@@ -31,7 +31,7 @@ public class CommentMapper {
 
     public static List<ResponseCommentDto> toCollectionResponseCommentDto(Collection<Comment> comments) {
         if (comments == null) {
-            return Collections.EMPTY_LIST;
+            return null;
         }
         return comments.stream()
                 .map(CommentMapper::toResponseCommentDto)

@@ -17,7 +17,8 @@ public class ErrorHandler {
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handlerElementNotFoundException(final ElementNotFoundException e) {
-        return Map.of("error", e.getMessage() + " не найден");
+        log.warn(e.getMessage());
+        return Map.of("error", e.getMessage());
     }
 
     @ExceptionHandler

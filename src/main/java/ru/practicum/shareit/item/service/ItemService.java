@@ -2,7 +2,9 @@ package ru.practicum.shareit.item.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -13,6 +15,8 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -20,8 +24,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ru.practicum.shareit.utils.Constants.SORT_BY_START;
-import static ru.practicum.shareit.utils.Constants.SORT_BY_START_DESC;
+import static ru.practicum.shareit.utils.Constants.*;
+import static ru.practicum.shareit.utils.ValidationErrors.INVALID_ITEM;
+import static ru.practicum.shareit.utils.ValidationErrors.USER_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -32,24 +37,33 @@ public class ItemService {
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
 
+    private final ItemRequestRepository itemRequestRepository;
+
     @Autowired
     public ItemService(ItemRepository itemRepository, UserRepository userRepository,
-                       CommentRepository commentRepository, BookingRepository bookingRepository) {
+                       CommentRepository commentRepository, BookingRepository bookingRepository,
+                       ItemRequestRepository itemRequestRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.bookingRepository = bookingRepository;
+        this.itemRequestRepository = itemRequestRepository;
     }
 
     public Item getItemById(Long id) {
         return itemRepository.findById(id).orElseThrow(() ->
-                new ElementNotFoundException(String.format("Вещь с ID " + id)));
+                new ElementNotFoundException(INVALID_ITEM));
     }
 
     public Item addItem(Long userId, ItemDto itemDto) {
         User user = getUser(userId);
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(user);
+        ItemRequest request = null;
+        if (itemDto.getRequestId() != null) {
+            request = itemRequestRepository.findById(itemDto.getRequestId()).orElse(null);
+        }
+        item.setItemRequest(request);
         return itemRepository.save(item);
     }
 
@@ -71,9 +85,9 @@ public class ItemService {
         return updateItem;
     }
 
-    public List<ResponseItemDto> getAllItemsByUser(Long userId) {
+    public List<ResponseItemDto> getAllItemsByUser(Long userId, int from, int size) {
         User owner = getUser(userId);
-        Collection<Item> items = itemRepository.findAllByOwnerOrderById(owner);
+        Collection<Item> items = itemRepository.findAllByOwnerOrderById(owner, PageRequest.of(from,size)).toList();
         return findInformationForResponseItemDto(items);
     }
 
@@ -90,13 +104,13 @@ public class ItemService {
         return ItemMapper.toResponseItemDto(item, lastBooking, nextBooking, comments);
     }
 
-    public Collection<Item> findItemByText(String text) {
-        List<Item> itemsList = new ArrayList<>();
+    @Transactional(readOnly = true)
+    public List<ResponseItemDto> findItemByText(String text, int from, int size) {
         if (text == null || text.isBlank()) {
-            return itemsList;
+            return Collections.EMPTY_LIST;
         }
-        itemsList = itemRepository.search(text);
-        return itemsList;
+        List<Item> itemsList = itemRepository.search(text, PageRequest.of(from,size));
+        return findInformationForResponseItemDto(itemsList);
     }
 
     public ResponseCommentDto addComment(CommentDto commentDto, Long itemId, Long userId) {
@@ -104,7 +118,7 @@ public class ItemService {
         User user = getUser(userId);
         Collection<Booking> bookings = bookingRepository.findBookingByItemIdAndBookerIdAndStatusAndStartBefore(itemId, userId, BookingStatus.APPROVED, LocalDateTime.now());
         if (bookings == null || bookings.isEmpty()) {
-            throw new ValidationException("Пользователь не найден");
+            throw new ValidationException(USER_NOT_FOUND);
         }
         Comment comment = CommentMapper.toComment(commentDto, item, user, LocalDateTime.now());
         comment = commentRepository.save(comment);
@@ -145,6 +159,6 @@ public class ItemService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
-                new ElementNotFoundException(String.format("Пользователь с ID " + userId)));
+                new ElementNotFoundException(USER_NOT_FOUND));
     }
 }

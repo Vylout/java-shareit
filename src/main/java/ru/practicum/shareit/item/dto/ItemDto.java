@@ -20,4 +20,5 @@ public class ItemDto {
     private String description;
     @NotNull(message = "Не указан статус доступности вещи")
     private Boolean available;
+    private Long requestId;
 }

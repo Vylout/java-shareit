@@ -11,6 +11,8 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import java.util.Collection;
 
@@ -55,18 +57,26 @@ public class BookingController {
     @GetMapping
     public Collection<ResponseBookingDto> getAllBookings(@RequestParam(value = "state", defaultValue = "ALL")
                                                          BookingState state,
-                                                         @RequestHeader(USER_ID_HEADER) Long userId) {
+                                                         @RequestHeader(USER_ID_HEADER) Long userId,
+                                                         @RequestParam(defaultValue = DEFAULT_FROM_VALUE)
+                                                             @Min(0)int from,
+                                                         @RequestParam(defaultValue =  DEFAULT_SIZE_VALUE)
+                                                             @Min(1) @Max(100) int size) {
         log.info("Запрос на получение всех бронирований пользователя {} со статусом {}", userId, state);
-        Collection<Booking> bookings = bookingService.getAllBookings(state, userId);
+        Collection<Booking> bookings = bookingService.getAllBookings(state, userId, from, size);
         return BookingMapper.toCollectionBookingDto(bookings);
     }
 
     @GetMapping("/owner")
     public Collection<ResponseBookingDto> getAllBookingsByOwner(@RequestParam(value = "state", defaultValue = "ALL")
                                                                 BookingState state,
-                                                                @RequestHeader(USER_ID_HEADER) Long ownerId) {
+                                                                @RequestHeader(USER_ID_HEADER) Long ownerId,
+                                                                @RequestParam(defaultValue = DEFAULT_FROM_VALUE)
+                                                                    @Min(0)int from,
+                                                                @RequestParam(defaultValue =  DEFAULT_SIZE_VALUE)
+                                                                    @Min(1) @Max(100) int size) {
         log.info("Запрос от пользователя {} на получения списка забронируемых у него вещей со статусом {}", ownerId, state);
-        Collection<Booking> bookings = bookingService.getAllBookingsByOwner(state, ownerId);
+        Collection<Booking> bookings = bookingService.getAllBookingsByOwner(state, ownerId, from, size);
         return BookingMapper.toCollectionBookingDto(bookings);
     }
 }

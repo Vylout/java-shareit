@@ -10,6 +10,8 @@ import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.utils.ValidationErrors.USER_NOT_FOUND;
+
 @Slf4j
 @Service
 @Transactional
@@ -29,7 +31,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new ElementNotFoundException(String.format("Пользователь с ID " + id)));
+                new ElementNotFoundException(USER_NOT_FOUND));
     }
 
     public User addUser(User user) {
@@ -39,7 +41,7 @@ public class UserService {
     @Transactional
     public User updateUser(User user) {
         User old = userRepository.findById(user.getId()).orElseThrow(() ->
-                new ElementNotFoundException(String.format("Пользователь с ID " + user.getId())));
+                new ElementNotFoundException(USER_NOT_FOUND));
         if (user.getName() != null) {
             old.setName(user.getName());
         }
