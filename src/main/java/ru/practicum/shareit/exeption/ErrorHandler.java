@@ -36,13 +36,6 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> handleUniqueEmailException(final UniqueEmailException e) {
-        log.warn(e.getMessage());
-        return Map.of("error", e.getMessage());
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleUniqueEmailException(final Throwable e) {
         log.warn(e.getMessage());
