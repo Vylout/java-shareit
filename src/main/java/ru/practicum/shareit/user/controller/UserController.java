@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @Slf4j
@@ -24,33 +25,33 @@ public class UserController {
     @GetMapping
     public Collection<UserDto> getAllUsers() {
         log.info("Запрос на получения списка всех пользователей");
-        Collection<User> users = userService.getAllUsers().values();
+        Collection<User> users = userService.getAllUsers();
         return UserMapper.toCollectionUserDto(users);
     }
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         log.info("Запрос пользователя с id {}", id);
-        return UserMapper.toDto(userService.getUserById(id));
+        return UserMapper.toUserDto(userService.getUserById(id));
     }
 
     @PostMapping
-    public UserDto addUser(@RequestBody UserDto userDto) {
+    public UserDto addUser(@Valid @RequestBody UserDto userDto) {
         log.info("Запрос на создание нового пользователя");
-        User user = userService.addUser(UserMapper.toEntity(null, userDto));
-        return UserMapper.toDto(user);
+        User user = userService.addUser(UserMapper.toUser(null, userDto));
+        return UserMapper.toUserDto(user);
     }
 
     @PatchMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         log.info("Запрос на обновление данных пользователя с id {}", id);
-        User user = UserMapper.toEntity(id, userDto);
-        return UserMapper.toDto(userService.updateUser(user));
+        User user = UserMapper.toUser(id, userDto);
+        return UserMapper.toUserDto(userService.updateUser(user));
     }
 
     @DeleteMapping("/{id}")
-    public Long removeUser(@PathVariable Long id) {
+    public void removeUser(@PathVariable Long id) {
         log.info("Запрос на удаление пользователя с id {}", id);
-        return userService.removeUser(id);
+        userService.removeUser(id);
     }
 }
