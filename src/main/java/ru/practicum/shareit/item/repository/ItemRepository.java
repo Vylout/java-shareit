@@ -25,5 +25,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "FROM Item AS i " +
             "WHERE i.itemRequest in ?1")
     List<Item> findAllByRequestIdIn(List<ItemRequest> requests);
+
     List<Item> findAllByItemRequest(ItemRequest request);
 }

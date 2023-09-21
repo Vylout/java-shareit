@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
     List<ItemRequest> findRequestByRequesterIdOrderByCreatedDesc(Long requester);
+
     @Query("SELECT r " +
             "FROM ItemRequest r " +
             "WHERE r.requester.id <> :user_id")

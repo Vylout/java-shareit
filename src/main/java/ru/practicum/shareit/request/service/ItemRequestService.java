@@ -14,7 +14,6 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,7 +52,7 @@ public class ItemRequestService {
 
     public List<ResponseItemRequestDto> getAll(Long requesterId, int from, int size) {
         getUser(requesterId);
-        List<ItemRequest> itemRequests = itemRequestRepository.findAllForUser(requesterId, PageRequest.of(from,size, SORT_BY_CREATED_DESC)).toList();
+        List<ItemRequest> itemRequests = itemRequestRepository.findAllForUser(requesterId, PageRequest.of(from, size, SORT_BY_CREATED_DESC)).toList();
         Map<ItemRequest, List<Item>> itemByRequests = findItemsByRequests(itemRequests);
         return itemByRequests.entrySet().stream()
                 .map(entry -> ItemRequestMapper.toResponseItemRequestDto(entry.getKey(), entry.getValue()))
@@ -67,6 +66,7 @@ public class ItemRequestService {
         List<Item> items = itemRepository.findAllByItemRequest(itemRequest);
         return ItemRequestMapper.toResponseItemRequestDto(itemRequest, items);
     }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new ElementNotFoundException(USER_NOT_FOUND));
