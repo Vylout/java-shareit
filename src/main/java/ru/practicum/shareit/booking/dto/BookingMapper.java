@@ -35,14 +35,14 @@ public class BookingMapper {
                 .build();
     }
 
-    public static Collection<ResponseBookingDto> toCollectionBookingDto(Collection<Booking> bookings) {
+    public static Collection<ResponseBookingDto> toBookingReferencedDto(Collection<Booking> bookings) {
         return bookings.stream()
                 .map(BookingMapper::toResponseBooking)
                 .collect(Collectors.toList());
 
     }
 
-    public static BookingReferencrdDto toBookingReferencrdDto(Booking booking) {
+    public static BookingReferencrdDto toBookingReferencedDto(Booking booking) {
         if (booking == null) {
             return null;
         }

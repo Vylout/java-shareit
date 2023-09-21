@@ -124,13 +124,13 @@ public class ItemServiceTest {
 
         Collection<ResponseItemDto> result = itemService.getAllItemsByUser(1L, 0, 20);
         ResponseItemDto itemDto1 = ResponseItemDto.builder().id(item1.getId()).name(item1.getName()).description(item1.getDescription())
-                .lastBooking(BookingMapper.toBookingReferencrdDto(lastBooking1))
-                .nextBooking(BookingMapper.toBookingReferencrdDto(nextBooking1))
+                .lastBooking(BookingMapper.toBookingReferencedDto(lastBooking1))
+                .nextBooking(BookingMapper.toBookingReferencedDto(nextBooking1))
                 .comments(CommentMapper.toCollectionResponseCommentDto(comments))
                 .build();
         ResponseItemDto itemDto2 = ResponseItemDto.builder().id(item2.getId()).name(item2.getName()).description(item2.getDescription())
-                .lastBooking(BookingMapper.toBookingReferencrdDto(lastBooking2))
-                .nextBooking(BookingMapper.toBookingReferencrdDto(nextBooking2))
+                .lastBooking(BookingMapper.toBookingReferencedDto(lastBooking2))
+                .nextBooking(BookingMapper.toBookingReferencedDto(nextBooking2))
                 .build();
 
         assertNotNull(result);

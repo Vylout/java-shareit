@@ -18,8 +18,8 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .lastBooking(BookingMapper.toBookingReferencrdDto(lastBooking))
-                .nextBooking(BookingMapper.toBookingReferencrdDto(nextBooking))
+                .lastBooking(BookingMapper.toBookingReferencedDto(lastBooking))
+                .nextBooking(BookingMapper.toBookingReferencedDto(nextBooking))
                 .comments(CommentMapper.toCollectionResponseCommentDto(comments))
                 .requestId(item.getItemRequest() == null ? null : item.getItemRequest().getId())
                 .build();

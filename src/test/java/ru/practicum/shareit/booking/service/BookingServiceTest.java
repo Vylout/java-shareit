@@ -164,12 +164,12 @@ public class BookingServiceTest {
                 () -> bookingService.getAllBookings(BookingState.UNSUPPORTED_STATUS, booker.getId(), 0, 20));
         assertEquals(UNSUPPORTED_STATUS, exception.getMessage());
         // ALL
-        when(bookingRepository.findByBookerId(booker.getId(), page)).thenReturn(pageResult);
+        when(bookingRepository.findAllByBooker(booker, page)).thenReturn(pageResult);
         result = bookingService.getAllBookings(BookingState.ALL, booker.getId(), 0, 20);
         assertNotNull(result);
         assertEquals(1, result.size());
         assertTrue(result.contains(booking));
-        verify(bookingRepository, times(1)).findByBookerId(booker.getId(), page);
+        verify(bookingRepository, times(1)).findAllByBooker(booker, page);
     }
 
     @Test

@@ -160,7 +160,7 @@ public class BookingRepositoryTest {
 
     @Test
     void findByBookerIdTest() {
-        Page<Booking> result = bookingRepository.findByBookerId(booker.getId(), Pageable.unpaged());
+        Page<Booking> result = bookingRepository.findAllByBooker(booker, Pageable.unpaged());
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(booking, result.getContent().get(0));
