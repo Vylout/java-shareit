@@ -8,9 +8,11 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Collection;
 
-import static ru.practicum.shareit.utils.Constants.USER_ID_HEADER;
+import static ru.practicum.shareit.utils.Constants.*;
 
 @Slf4j
 @RestController
@@ -41,9 +43,13 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<ResponseItemDto> getAllItemsByUser(@RequestHeader(USER_ID_HEADER) Long userId) {
+    public Collection<ResponseItemDto> getAllItemsByUser(@RequestHeader(USER_ID_HEADER) Long userId,
+                                                         @RequestParam(defaultValue = DEFAULT_FROM_VALUE)
+                                                            @Min(0)int from,
+                                                         @RequestParam(defaultValue =  DEFAULT_SIZE_VALUE)
+                                                            @Min(1) @Max(100) int size) {
         log.info("Запрос на получение списка вещей пользователя с id {}", userId);
-        return itemService.getAllItemsByUser(userId);
+        return itemService.getAllItemsByUser(userId, from, size);
     }
 
     @GetMapping("/{id}")
@@ -54,9 +60,13 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> findItemByText(@RequestParam String text) {
+    public Collection<ResponseItemDto> findItemByText(@RequestParam String text,
+                                              @RequestParam(defaultValue = DEFAULT_FROM_VALUE)
+                                                @Min(0)int from,
+                                              @RequestParam(defaultValue =  DEFAULT_SIZE_VALUE)
+                                                @Min(1) @Max(100) int size) {
         log.info("Запрос поиска вещи по тексту: {}", text);
-        return ItemMapper.toCollection(itemService.findItemByText(text));
+        return itemService.findItemByText(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

@@ -17,7 +17,8 @@ public class ErrorHandler {
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handlerElementNotFoundException(final ElementNotFoundException e) {
-        return Map.of("error", e.getMessage() + " не найден");
+        log.warn(e.getMessage());
+        return Map.of("error", e.getMessage());
     }
 
     @ExceptionHandler
@@ -30,13 +31,6 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleUnsupportedStatusException(final UnsupportedStatusException e) {
-        log.warn(e.getMessage());
-        return Map.of("error", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> handleUniqueEmailException(final UniqueEmailException e) {
         log.warn(e.getMessage());
         return Map.of("error", e.getMessage());
     }

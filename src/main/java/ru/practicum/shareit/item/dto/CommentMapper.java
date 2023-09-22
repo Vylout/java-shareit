@@ -6,7 +6,6 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class CommentMapper {
 
     public static List<ResponseCommentDto> toCollectionResponseCommentDto(Collection<Comment> comments) {
         if (comments == null) {
-            return Collections.EMPTY_LIST;
+            return null;
         }
         return comments.stream()
                 .map(CommentMapper::toResponseCommentDto)
