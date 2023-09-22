@@ -35,7 +35,7 @@ public class BookingControllerTest {
     @Mock
     private BookingService bookingService;
     @InjectMocks
-    BookingController bookingController;
+    private BookingController bookingController;
     private final ObjectMapper mapper = new ObjectMapper();
     private MockMvc mvc;
     private BookingDto postBookingDto;
