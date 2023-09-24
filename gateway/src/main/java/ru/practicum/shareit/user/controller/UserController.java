@@ -14,7 +14,6 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-@Validated
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserClient userClient;
@@ -32,13 +31,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> add(@Validated() @RequestBody UserDto userDto) {
         log.info("Запрос на добавление пользователя");
         return userClient.create(userDto);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Object> update(@Valid @RequestBody UserDto userDto,
+    public ResponseEntity<Object> update(@RequestBody UserDto userDto,
                                          @PathVariable("id") Long id) {
         log.info("Запрос на обновление данных пользователя с ID {}", id);
         return userClient.update(userDto, id);

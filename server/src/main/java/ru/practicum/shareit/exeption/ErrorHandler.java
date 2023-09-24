@@ -50,6 +50,13 @@ public class ErrorHandler {
         return Map.of("error", e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ErrorResponse handleConstraintViolationExceptionHandler(RuntimeException e) {
+        log.warn(e.getClass().getSimpleName(), e);
+        return new ErrorResponse(400, "Bad Request", e.getMessage());
+    }
+
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationExceptions(

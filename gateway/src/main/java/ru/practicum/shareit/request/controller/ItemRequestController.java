@@ -19,7 +19,6 @@ import static ru.practicum.shareit.utils.ConstantsClient.*;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping(path = "/requests")
-@Validated
 public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
 

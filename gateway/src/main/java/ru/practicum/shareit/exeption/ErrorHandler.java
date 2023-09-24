@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.rmi.AccessException;
 import java.util.Objects;
 
@@ -39,6 +40,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ArgumentException.class})
     public ErrorResponse handleArgumentExceptionHandler(RuntimeException e) {
+        log.warn(e.getClass().getSimpleName(), e);
+        return new ErrorResponse(400, "Bad Request", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ErrorResponse handleConstraintViolationExceptionHandler(RuntimeException e) {
         log.warn(e.getClass().getSimpleName(), e);
         return new ErrorResponse(400, "Bad Request", e.getMessage());
     }

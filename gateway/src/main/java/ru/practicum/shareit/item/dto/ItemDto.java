@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class ItemDto {
-    private int id;
+    private Long id;
     @NotBlank(message = "Параметар имя не может быть пустым")
     private String name;
     @NotBlank(message = "Параметор описание не может быть пустым")
     private String description;
     @NotNull(message = "Не указан статус")
     private Boolean available;
-    private Integer requestId;
+    private Long requestId;
 }

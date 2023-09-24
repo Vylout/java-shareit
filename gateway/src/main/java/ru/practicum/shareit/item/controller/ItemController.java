@@ -17,7 +17,6 @@ import javax.validation.constraints.PositiveOrZero;
 import static ru.practicum.shareit.utils.ConstantsClient.*;
 
 @Slf4j
-@Validated
 @Controller
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class ItemController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Object> update(@Valid @RequestBody ItemDto postItemDto,
+    public ResponseEntity<Object> update(@RequestBody ItemDto postItemDto,
                                          @PathVariable("id") Long itemId,
                                          @RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Запрос на обновление данных вещи с id = {}", itemId);

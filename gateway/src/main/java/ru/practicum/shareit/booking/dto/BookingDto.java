@@ -20,7 +20,7 @@ import static ru.practicum.shareit.utils.ConstantsClient.DATE_PATTERN;
 @Builder
 public class BookingDto {
     @NotNull
-    private int itemId;
+    private Long itemId;
     @NotNull
     @FutureOrPresent
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN)
