@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.client.UserClient;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import javax.validation.Valid;
-
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 @Validated
 @RequestMapping(path = "/users")
-public class UserClientController {
+public class UserController {
     private final UserClient userClient;
 
     @GetMapping("{id}")
