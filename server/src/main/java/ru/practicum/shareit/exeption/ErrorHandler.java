@@ -36,12 +36,15 @@ public class ErrorHandler {
         return Map.of("error", e.getMessage());
     }
 
+    /*
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleConstraintViolationException(final ConstraintViolationException e) {
         log.warn(e.getMessage());
         return Map.of("error", e.getMessage());
     }
+
+     */
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
