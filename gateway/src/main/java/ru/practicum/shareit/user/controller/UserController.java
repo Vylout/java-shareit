@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.client.UserClient;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import javax.validation.Valid;
-
 @Slf4j
 @RequiredArgsConstructor
 @Controller
