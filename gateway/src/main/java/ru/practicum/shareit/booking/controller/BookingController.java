@@ -27,7 +27,7 @@ public class BookingController {
     @PostMapping
     ResponseEntity<Object> add(@Valid @RequestBody BookingDto postBookingDto,
                                @RequestHeader(USER_ID_HEADER) Long bookerId) {
-        log.info("Запрос на добавление бронирования вещи с ID {} от пользователя с ID {}",postBookingDto.getItemId(), bookerId);
+        log.info("Запрос на добавление бронирования вещи с ID {} от пользователя с ID {}", postBookingDto.getItemId(), bookerId);
         return bookingClient.createBooking(postBookingDto, bookerId);
     }
 

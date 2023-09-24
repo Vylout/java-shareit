@@ -9,10 +9,6 @@ import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 import java.util.Collection;
 
 import static ru.practicum.shareit.utils.Constants.*;

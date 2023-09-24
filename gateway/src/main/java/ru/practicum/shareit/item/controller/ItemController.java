@@ -21,7 +21,7 @@ import static ru.practicum.shareit.utils.ConstantsClient.*;
 @Controller
 @RequestMapping("/items")
 @RequiredArgsConstructor
-public class ItemClientController {
+public class ItemController {
     private final ItemClient itemClient;
 
     @PostMapping

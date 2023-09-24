@@ -8,8 +8,6 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.util.Collection;
 
 import static ru.practicum.shareit.utils.Constants.*;
