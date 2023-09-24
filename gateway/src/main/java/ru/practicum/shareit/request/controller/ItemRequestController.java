@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.client.ItemRequestClient;
-import ru.practicum.shareit.request.dto.ItemRequestClientDto;
+import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -20,11 +20,11 @@ import static ru.practicum.shareit.utils.ConstantsClient.*;
 @Controller
 @RequestMapping(path = "/requests")
 @Validated
-public class ItemRequestClientController {
+public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
 
     @PostMapping
-    public ResponseEntity<Object> add(@Valid @RequestBody ItemRequestClientDto requestDto,
+    public ResponseEntity<Object> add(@Valid @RequestBody ItemRequestDto requestDto,
                                       @RequestHeader(USER_ID_HEADER) Long requesterId) {
         log.info("Запрос на добавление запроса нужной вещи от пользователя {}", requesterId);
         return itemRequestClient.create(requestDto, requesterId);

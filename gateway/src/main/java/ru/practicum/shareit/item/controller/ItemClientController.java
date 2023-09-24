@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.client.ItemClient;
-import ru.practicum.shareit.item.dto.CommentClientDto;
-import ru.practicum.shareit.item.dto.ItemClientDto;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -25,14 +25,14 @@ public class ItemClientController {
     private final ItemClient itemClient;
 
     @PostMapping
-    public ResponseEntity<Object> add(@Valid @RequestBody ItemClientDto postItemDto,
+    public ResponseEntity<Object> add(@Valid @RequestBody ItemDto postItemDto,
                                       @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос для добовление вещи");
         return itemClient.create(postItemDto, userId);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Object> update(@Valid @RequestBody ItemClientDto postItemDto,
+    public ResponseEntity<Object> update(@Valid @RequestBody ItemDto postItemDto,
                                          @PathVariable("id") Long itemId,
                                          @RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Запрос на обновление данных вещи с id = {}", itemId);
@@ -67,7 +67,7 @@ public class ItemClientController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<Object> addComment(@Valid @RequestBody CommentClientDto commentDto,
+    public ResponseEntity<Object> addComment(@Valid @RequestBody CommentDto commentDto,
                                              @PathVariable Long itemId,
                                              @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на добавление сомментария от ползователя {} к вещи {}", userId, itemId);

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ItemClientDto {
+public class ItemDto {
     private int id;
     @NotBlank(message = "Параметар имя не может быть пустым")
     private String name;

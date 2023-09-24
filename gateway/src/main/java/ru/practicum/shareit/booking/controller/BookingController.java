@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.client.BookingClient;
-import ru.practicum.shareit.booking.dto.BookingClientDto;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.BookingState;
 
 import javax.validation.Valid;
@@ -21,11 +21,11 @@ import static ru.practicum.shareit.utils.ConstantsClient.*;
 @Controller
 @RequestMapping(path = "/bookings")
 @Validated
-public class BookingClientController {
+public class BookingController {
     private final BookingClient bookingClient;
 
     @PostMapping
-    ResponseEntity<Object> add(@Valid @RequestBody BookingClientDto postBookingDto,
+    ResponseEntity<Object> add(@Valid @RequestBody BookingDto postBookingDto,
                                @RequestHeader(USER_ID_HEADER) Long bookerId) {
         log.info("Запрос на добавление бронирования вещи с ID {} от пользователя с ID {}",postBookingDto.getItemId(), bookerId);
         return bookingClient.createBooking(postBookingDto, bookerId);

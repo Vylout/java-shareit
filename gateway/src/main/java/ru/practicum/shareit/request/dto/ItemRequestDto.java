@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemRequestClientDto {
+public class ItemRequestDto {
     @NotNull(message = "Описание не может быть пустым")
     private String description;
 }

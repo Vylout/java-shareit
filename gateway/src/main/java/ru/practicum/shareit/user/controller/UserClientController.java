@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.client.UserClient;
-import ru.practicum.shareit.user.dto.UserClientDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.Valid;
 
@@ -32,13 +32,13 @@ public class UserClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@Valid @RequestBody UserClientDto userDto) {
+    public ResponseEntity<Object> add(@Validated @RequestBody UserDto userDto) {
         log.info("Запрос на добавление пользователя");
         return userClient.create(userDto);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Object> update(@Valid @RequestBody UserClientDto userDto,
+    public ResponseEntity<Object> update(@Validated @RequestBody UserDto userDto,
                                          @PathVariable("id") Long id) {
         log.info("Запрос на обновление данных пользователя с ID {}", id);
         return userClient.update(userDto, id);

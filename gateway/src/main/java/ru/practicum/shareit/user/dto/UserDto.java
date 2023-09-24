@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserClientDto {
+public class UserDto {
     private Long id;
     @NotNull(message = "Поле Имя не может быть пустым")
     private String name;

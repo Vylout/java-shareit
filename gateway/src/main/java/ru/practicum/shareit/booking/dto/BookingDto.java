@@ -18,7 +18,7 @@ import static ru.practicum.shareit.utils.ConstantsClient.DATE_PATTERN;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookingClientDto {
+public class BookingDto {
     @NotNull
     private int itemId;
     @NotNull
